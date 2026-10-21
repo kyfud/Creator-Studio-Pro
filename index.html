@@ -1,0 +1,792 @@
+```html
+<!DOCTYPE html>
+<html lang="hi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Creator Tool Suite - Boost SEO, Views & Revenue</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        yt: {
+                            red: '#FF0000',
+                            dark: '#0F0F0F',
+                            card: '#1F1F1F',
+                            hover: '#272727',
+                            border: '#3F3F3F',
+                            text: '#F1F1F1',
+                            muted: '#AAAAAA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0F0F0F;
+            color: #F1F1F1;
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F0F0F;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Ad Banner Placeholder Glow */
+        .ad-slot {
+            border: 2px dashed #444;
+            transition: all 0.3s ease;
+        }
+        .ad-slot:hover {
+            border-color: #FF0000;
+        }
+    </style>
+
+    <!-- ================================================================= -->
+    <!-- MONETAG AD SCRIPT (HEADER / IN-PAGE PUSH / POPUNDER PLACEHOLDER)  -->
+    <!-- Paste your Monetag main script here!                             -->
+    <!-- Example: <script src="//thubanoa.com/1ab2c3..."></script>         -->
+    <!-- ================================================================= -->
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Toast Notification Box -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-yt-red text-white px-5 py-3 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-xl"></i>
+        <span id="toast-msg">Copied to clipboard!</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-yt-dark/95 backdrop-blur-md border-b border-yt-border px-4 lg:px-8 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="bg-yt-red text-white p-2 rounded-xl flex items-center justify-center">
+                <i class="fa-brands fa-youtube text-2xl"></i>
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg lg:text-xl tracking-tight flex items-center gap-2">
+                    CreatorStudio <span class="bg-yt-red/20 text-yt-red text-xs px-2 py-0.5 rounded-full font-semibold border border-yt-red/30">PRO</span>
+                </h1>
+                <p class="text-xs text-yt-muted hidden sm:block">YouTube Viral SEO & Creator Utility Hub</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button onclick="openModal('deploy-modal')" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-lg shadow-indigo-900/30">
+                <i class="fa-brands fa-github text-base"></i>
+                <span class="hidden sm:inline">1-Click Host on</span> GitHub
+            </button>
+            <button onclick="openModal('monetag-modal')" class="bg-yt-card hover:bg-yt-hover border border-yt-border text-xs sm:text-sm text-yellow-400 font-semibold px-3 py-2 rounded-xl transition flex items-center gap-2">
+                <i class="fa-solid fa-dollar-sign text-sm"></i>
+                <span class="hidden sm:inline">Monetag Ads</span> Setup
+            </button>
+        </div>
+    </header>
+
+    <!-- Top Monetag Banner Ad Slot -->
+    <div class="container mx-auto px-4 mt-4">
+        <div class="ad-slot bg-yt-card/50 rounded-2xl p-4 text-center min-h-[90px] flex flex-col items-center justify-center relative overflow-hidden">
+            <span class="text-xs font-mono text-yt-muted uppercase tracking-widest mb-1">[ TOP BANNER AD SLOT - MONETAG ]</span>
+            <p class="text-xs text-yt-muted">Replace this box with your Monetag Banner Code (728x90 or Native Ad)</p>
+            <!-- PASTE MONETAG BANNER AD CODE HERE -->
+        </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <main class="container mx-auto px-4 py-6 flex-grow flex flex-col lg:flex-row gap-6">
+
+        <!-- Sidebar Navigation Tabs -->
+        <aside class="lg:w-64 flex-shrink-0">
+            <nav class="bg-yt-card border border-yt-border rounded-2xl p-2 flex flex-row lg:flex-col gap-1 overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('title-tool')" id="tab-title-tool" class="tab-btn active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-left whitespace-nowrap bg-yt-red text-white">
+                    <i class="fa-solid fa-wand-magic-sparkles text-lg w-5 text-center"></i>
+                    Title & CTR Analyzer
+                </button>
+                <button onclick="switchTab('tag-tool')" id="tab-tag-tool" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-yt-muted hover:bg-yt-hover hover:text-white transition text-left whitespace-nowrap">
+                    <i class="fa-solid fa-hashtag text-lg w-5 text-center"></i>
+                    Tags & Hashtags
+                </button>
+                <button onclick="switchTab('desc-tool')" id="tab-desc-tool" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-yt-muted hover:bg-yt-hover hover:text-white transition text-left whitespace-nowrap">
+                    <i class="fa-solid fa-file-lines text-lg w-5 text-center"></i>
+                    Description Builder
+                </button>
+                <button onclick="switchTab('thumb-tool')" id="tab-thumb-tool" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-yt-muted hover:bg-yt-hover hover:text-white transition text-left whitespace-nowrap">
+                    <i class="fa-solid fa-image text-lg w-5 text-center"></i>
+                    Thumbnail CTR Tester
+                </button>
+                <button onclick="switchTab('calc-tool')" id="tab-calc-tool" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-yt-muted hover:bg-yt-hover hover:text-white transition text-left whitespace-nowrap">
+                    <i class="fa-solid fa-calculator text-lg w-5 text-center"></i>
+                    Earnings Calculator
+                </button>
+            </nav>
+
+            <!-- Sidebar Ad Slot -->
+            <div class="ad-slot bg-yt-card/50 border border-yt-border rounded-2xl p-4 mt-4 text-center min-h-[250px] hidden lg:flex flex-col items-center justify-center">
+                <span class="text-xs font-mono text-yt-muted uppercase tracking-widest mb-1">[ SIDEBAR AD ]</span>
+                <p class="text-xs text-yt-muted">Monetag Square / Native Banner</p>
+                <!-- PASTE MONETAG SIDEBAR AD CODE HERE -->
+            </div>
+        </aside>
+
+        <!-- Tool Content Area -->
+        <section class="flex-grow bg-yt-card border border-yt-border rounded-2xl p-5 lg:p-7 min-h-[500px]">
+
+            <!-- TOOL 1: YouTube Title Generator & CTR Analyzer -->
+            <div id="title-tool" class="tool-content">
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-yt-border">
+                    <div>
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-yt-red"></i>
+                            Title Generator & CTR Predictor
+                        </h2>
+                        <p class="text-xs text-yt-muted">Create click-worthy viral titles and test predicted CTR strength.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-yt-muted mb-2 uppercase tracking-wider">Target Topic / Niche Keyword</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="title-topic" placeholder="e.g. How to grow on Instagram, Unboxing iPhone 16..." class="w-full bg-yt-dark border border-yt-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-yt-red transition">
+                                <button onclick="generateTitles()" class="bg-yt-red hover:bg-red-700 text-white font-semibold px-5 py-3 rounded-xl transition flex items-center gap-2 text-sm whitespace-nowrap">
+                                    <i class="fa-solid fa-bolt"></i> Generate
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Generated Titles List -->
+                        <div id="generated-titles-container" class="space-y-3 mt-4">
+                            <p class="text-xs text-yt-muted italic">Click generate to produce high-CTR viral title templates.</p>
+                        </div>
+                    </div>
+
+                    <!-- CTR Score Predictor Box -->
+                    <div class="bg-yt-dark border border-yt-border rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-semibold text-sm mb-3 flex items-center justify-between">
+                                CTR Score Analyzer
+                                <i class="fa-solid fa-chart-line text-yt-red"></i>
+                            </h3>
+                            <textarea id="analyze-input" oninput="analyzeTitle()" rows="3" placeholder="Type or paste your custom title here to check score..." class="w-full bg-yt-card border border-yt-border rounded-lg p-3 text-xs focus:outline-none focus:border-yt-red transition mb-4"></textarea>
+
+                            <!-- Score Meter -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-yt-muted">Predicted CTR Strength</span>
+                                    <span id="ctr-score-val" class="font-bold text-yellow-400">0%</span>
+                                </div>
+                                <div class="w-full bg-yt-card h-3 rounded-full overflow-hidden border border-yt-border">
+                                    <div id="ctr-bar" class="bg-yellow-400 h-full w-0 transition-all duration-500"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="ctr-feedback" class="mt-4 p-3 bg-yt-card/50 rounded-lg text-xs text-yt-muted border border-yt-border">
+                            Enter title to calculate power words and readability score.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOOL 2: YouTube Tag & Keyword Generator -->
+            <div id="tag-tool" class="tool-content hidden">
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-yt-border">
+                    <div>
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-hashtag text-yt-red"></i>
+                            Tags & Hashtags Generator
+                        </h2>
+                        <p class="text-xs text-yt-muted">Generate high-volume search tags and trending hashtags for Shorts & Long videos.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-5">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="text" id="tag-keyword" placeholder="Enter video topic (e.g. Free Fire Tips, Python Tutorial)..." class="w-full bg-yt-dark border border-yt-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-yt-red transition">
+                        <button onclick="generateTags()" class="bg-yt-red hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-xl transition flex items-center gap-2 text-sm justify-center whitespace-nowrap">
+                            <i class="fa-solid fa-magnifying-glass"></i> Find Tags
+                        </button>
+                    </div>
+
+                    <!-- SEO Tags Result -->
+                    <div class="bg-yt-dark border border-yt-border rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-yt-muted">Video Search Tags (<span id="tag-count">0</span>/500 Chars)</span>
+                            <button onclick="copyToClipboard('tags-output')" class="text-xs bg-yt-card hover:bg-yt-hover border border-yt-border text-yt-text px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i> Copy All Tags
+                            </button>
+                        </div>
+                        <div id="tags-badge-container" class="flex flex-wrap gap-2 mb-3 min-h-[80px] p-2 bg-yt-card/40 rounded-lg border border-yt-border/50">
+                            <span class="text-xs text-yt-muted italic">Tags will appear here...</span>
+                        </div>
+                        <textarea id="tags-output" class="hidden"></textarea>
+                    </div>
+
+                    <!-- Shorts Hashtags Result -->
+                    <div class="bg-yt-dark border border-yt-border rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-yt-muted">Trending Shorts Hashtags</span>
+                            <button onclick="copyToClipboard('hashtags-output')" class="text-xs bg-yt-card hover:bg-yt-hover border border-yt-border text-yt-text px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i> Copy Hashtags
+                            </button>
+                        </div>
+                        <p id="hashtags-display" class="text-sm font-mono text-blue-400 bg-yt-card/40 p-3 rounded-lg border border-yt-border/50 min-h-[50px] leading-relaxed">
+                            #YouTubeShorts #Trending #Viral
+                        </p>
+                        <textarea id="hashtags-output" class="hidden">#YouTubeShorts #Trending #Viral</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOOL 3: Video Description Builder -->
+            <div id="desc-tool" class="tool-content hidden">
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-yt-border">
+                    <div>
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-file-lines text-yt-red"></i>
+                            Structured Description Builder
+                        </h2>
+                        <p class="text-xs text-yt-muted">Build YouTube-optimized descriptions with timestamps, social links & affiliate disclaimers.</p>
+                    </div>
+                    <button onclick="copyToClipboard('final-description')" class="bg-yt-red hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2">
+                        <i class="fa-regular fa-copy"></i> Copy Full Description
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Form Controls -->
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <label class="block text-yt-muted font-semibold mb-1">Video Summary / Hook</label>
+                            <textarea id="desc-hook" oninput="buildDescription()" rows="2" class="w-full bg-yt-dark border border-yt-border rounded-xl p-3 focus:outline-none focus:border-yt-red transition" placeholder="In this video, you will learn how to..."></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-yt-muted font-semibold mb-1">Timestamps (Chapters)</label>
+                            <textarea id="desc-timestamps" oninput="buildDescription()" rows="3" class="w-full bg-yt-dark border border-yt-border rounded-xl p-3 font-mono focus:outline-none focus:border-yt-red transition" placeholder="00:00 - Introduction&#10;01:30 - Main Step 1&#10;05:00 - Conclusion"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-yt-muted font-semibold mb-1">Social Media & Links</label>
+                            <input type="text" id="desc-instagram" oninput="buildDescription()" placeholder="Instagram Profile Link" class="w-full bg-yt-dark border border-yt-border rounded-xl p-2.5 mb-2 focus:outline-none focus:border-yt-red transition">
+                            <input type="text" id="desc-telegram" oninput="buildDescription()" placeholder="Telegram Channel Link" class="w-full bg-yt-dark border border-yt-border rounded-xl p-2.5 focus:outline-none focus:border-yt-red transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-yt-muted font-semibold mb-1">Affiliate Link / Gear Used</label>
+                            <input type="text" id="desc-gear" oninput="buildDescription()" placeholder="Mic / Camera / App Link" class="w-full bg-yt-dark border border-yt-border rounded-xl p-2.5 focus:outline-none focus:border-yt-red transition">
+                        </div>
+                    </div>
+
+                    <!-- Live Preview Area -->
+                    <div class="flex flex-col">
+                        <label class="block text-xs text-yt-muted font-semibold mb-2 uppercase tracking-wider">Live Preview Box</label>
+                        <textarea id="final-description" readonly class="w-full h-full min-h-[300px] bg-yt-dark border border-yt-border rounded-xl p-4 font-mono text-xs leading-relaxed focus:outline-none resize-none text-yt-text"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOOL 4: YouTube Thumbnail CTR Previewer -->
+            <div id="thumb-tool" class="tool-content hidden">
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-yt-border">
+                    <div>
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-image text-yt-red"></i>
+                            Thumbnail CTR Feed Previewer
+                        </h2>
+                        <p class="text-xs text-yt-muted">See how your thumbnail looks inside real YouTube Dark & Light feeds.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Upload / Input Controls -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-yt-muted mb-2">Upload Thumbnail Image</label>
+                            <input type="file" id="thumb-file" accept="image/*" onchange="previewThumbnail(event)" class="w-full text-xs text-yt-muted file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-yt-red file:text-white hover:file:bg-red-700 border border-yt-border rounded-xl bg-yt-dark cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-yt-muted mb-2">Or Paste Image / Video URL</label>
+                            <input type="text" id="thumb-url" oninput="loadThumbFromUrl()" placeholder="https://..." class="w-full bg-yt-dark border border-yt-border rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-yt-red transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input type="text" id="preview-title" oninput="updateFeedPreview()" value="🔥 THIS CHANGES EVERYTHING! (Full Guide 2026)" placeholder="Video Title" class="bg-yt-dark border border-yt-border rounded-xl p-2.5 text-xs focus:outline-none focus:border-yt-red">
+                        <input type="text" id="preview-channel" oninput="updateFeedPreview()" value="Tech Creator Hindi" placeholder="Channel Name" class="bg-yt-dark border border-yt-border rounded-xl p-2.5 text-xs focus:outline-none focus:border-yt-red">
+                    </div>
+
+                    <!-- Feed Preview Card -->
+                    <div class="bg-yt-dark border border-yt-border rounded-2xl p-4 md:p-6">
+                        <h3 class="text-xs font-semibold text-yt-muted uppercase tracking-wider mb-4">YouTube Desktop / Mobile Feed Simulation</h3>
+                        
+                        <div class="max-w-sm mx-auto bg-black rounded-2xl overflow-hidden border border-yt-border shadow-2xl">
+                            <!-- Thumbnail Image Container -->
+                            <div class="relative aspect-video bg-yt-card flex items-center justify-center overflow-hidden">
+                                <img id="feed-img" src="https://placehold.co/1280x720/1f1f1f/ffffff?text=Upload+Your+Thumbnail" class="w-full h-full object-cover" alt="Thumbnail Preview">
+                                <span class="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">10:42</span>
+                            </div>
+
+                            <!-- Channel Details -->
+                            <div class="p-3 flex gap-3">
+                                <div class="w-9 h-9 rounded-full bg-yt-red text-white flex-shrink-0 flex items-center justify-center font-bold text-xs">
+                                    YT
+                                </div>
+                                <div class="space-y-1">
+                                    <h4 id="feed-title-display" class="text-xs font-semibold line-clamp-2 leading-snug">🔥 THIS CHANGES EVERYTHING! (Full Guide 2026)</h4>
+                                    <p id="feed-channel-display" class="text-[11px] text-yt-muted flex items-center gap-1">
+                                        Tech Creator Hindi <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                    </p>
+                                    <p class="text-[10px] text-yt-muted">245K views • 2 hours ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOOL 5: Channel Growth / Monetization Calculator -->
+            <div id="calc-tool" class="tool-content hidden">
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-yt-border">
+                    <div>
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-yt-red"></i>
+                            YouTube Earnings & Monetization Calculator
+                        </h2>
+                        <p class="text-xs text-yt-muted">Estimate monthly/yearly revenue based on views and niche RPM rates.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-yt-muted mb-2">Select Your Niche (Estimated RPM)</label>
+                            <select id="calc-niche" onchange="calculateEarnings()" class="w-full bg-yt-dark border border-yt-border rounded-xl p-3 text-sm focus:outline-none focus:border-yt-red transition">
+                                <option value="0.40">Gaming & Entertainment (RPM: ~$0.40 / 1K views)</option>
+                                <option value="1.20" selected>Tech, How-to & Tutorials (RPM: ~$1.20 / 1K views)</option>
+                                <option value="2.50">Finance, Crypto & Stock Market (RPM: ~$2.50 / 1K views)</option>
+                                <option value="0.80">Vlogs, Lifestyle & Cooking (RPM: ~$0.80 / 1K views)</option>
+                                <option value="1.80">Business & Digital Marketing (RPM: ~$1.80 / 1K views)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-2">
+                                <span class="text-yt-muted">Daily Projected Views</span>
+                                <span id="calc-views-val" class="text-yt-red font-bold">50,000 Views/Day</span>
+                            </div>
+                            <input type="range" id="calc-views" min="1000" max="500000" step="1000" value="50000" oninput="calculateEarnings()" class="w-full accent-yt-red bg-yt-dark cursor-pointer">
+                        </div>
+
+                        <div class="p-4 bg-yt-dark border border-yt-border rounded-xl text-xs space-y-2 text-yt-muted">
+                            <p><i class="fa-solid fa-circle-info text-blue-400 mr-1"></i> <strong>What is RPM?</strong> Revenue Per Mille is the exact amount you earn per 1,000 views after YouTube's 45% cut.</p>
+                        </div>
+                    </div>
+
+                    <!-- Earnings Display Cards -->
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-yt-dark border border-yt-border rounded-2xl p-5 flex flex-col justify-center items-center text-center">
+                            <span class="text-xs text-yt-muted font-semibold uppercase tracking-wider mb-1">Estimated Daily Revenue</span>
+                            <span id="res-daily" class="text-3xl font-extrabold text-green-400">$60.00</span>
+                            <span id="res-daily-inr" class="text-xs text-yt-muted mt-1">≈ ₹4,980 INR</span>
+                        </div>
+
+                        <div class="bg-yt-dark border border-yt-border rounded-2xl p-5 flex flex-col justify-center items-center text-center border-l-4 border-l-yt-red">
+                            <span class="text-xs text-yt-muted font-semibold uppercase tracking-wider mb-1">Estimated Monthly Revenue</span>
+                            <span id="res-monthly" class="text-4xl font-extrabold text-white">$1,800.00</span>
+                            <span id="res-monthly-inr" class="text-xs text-yt-muted mt-1">≈ ₹1,49,400 INR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Bottom Monetag Banner Ad Slot -->
+    <div class="container mx-auto px-4 mb-6">
+        <div class="ad-slot bg-yt-card/50 rounded-2xl p-4 text-center min-h-[90px] flex flex-col items-center justify-center">
+            <span class="text-xs font-mono text-yt-muted uppercase tracking-widest mb-1">[ BOTTOM BANNER AD SLOT - MONETAG ]</span>
+            <p class="text-xs text-yt-muted">Replace this box with Monetag Banner / Native Ad Code</p>
+            <!-- PASTE MONETAG BOTTOM AD CODE HERE -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-yt-border bg-yt-dark px-4 py-6 text-center text-xs text-yt-muted">
+        <p>Built for YouTubers & Content Creators • Ready for 1-Click GitHub Deployment</p>
+    </footer>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 1: 1-Click GitHub Pages Deployment Guide (Hindi/Hinglish) -->
+    <!-- ================================================================= -->
+    <div id="deploy-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-yt-card border border-yt-border rounded-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeModal('deploy-modal')" class="absolute top-4 right-4 text-yt-muted hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-xl font-bold mb-1 flex items-center gap-2">
+                <i class="fa-brands fa-github text-white"></i>
+                GitHub Pages Par Free Website Host Kaise Kare?
+            </h3>
+            <p class="text-xs text-yt-muted mb-4">Aap is pure tool ko bilkul free me GitHub par live kar sakte ho.</p>
+
+            <div class="space-y-4 text-xs leading-relaxed text-yt-text">
+                <div class="bg-yt-dark p-3.5 rounded-xl border border-yt-border">
+                    <strong class="text-sm text-yt-red block mb-1">Step 1: Save `index.html` File</strong>
+                    <p>Is webpage ke pure code ko apne PC ya Mobile me <code class="bg-black px-2 py-0.5 rounded text-yellow-400">index.html</code> ke naam se save kar lo.</p>
+                </div>
+
+                <div class="bg-yt-dark p-3.5 rounded-xl border border-yt-border">
+                    <strong class="text-sm text-yt-red block mb-1">Step 2: GitHub me Account & Repository Banao</strong>
+                    <p>1. <a href="https://github.com" target="_blank" class="text-blue-400 underline">GitHub.com</a> par jaakar free account banao.<br>
+                    2. Top right me <strong class="text-white">+ (Plus)</strong> icon par click karke <strong>New repository</strong> chuno.<br>
+                    3. Repository name rakho: <code class="bg-black px-2 py-0.5 rounded text-green-400">yt-creator-tools</code> aur <strong>Public</strong> select karo.</p>
+                </div>
+
+                <div class="bg-yt-dark p-3.5 rounded-xl border border-yt-border">
+                    <strong class="text-sm text-yt-red block mb-1">Step 3: `index.html` Upload Karo</strong>
+                    <p>1. "uploading an existing file" par click karo.<br>
+                    2. Apni <code class="bg-black px-2 py-0.5 rounded text-yellow-400">index.html</code> file drag & drop karo aur <strong>Commit changes</strong> par click karo.</p>
+                </div>
+
+                <div class="bg-yt-dark p-3.5 rounded-xl border border-yt-border">
+                    <strong class="text-sm text-yt-red block mb-1">Step 4: 1-Click Public Enable Karo</strong>
+                    <p>1. Repository ki <strong>Settings</strong> tab me jao.<br>
+                    2. Left menu se <strong>Pages</strong> par click karo.<br>
+                    3. Branch me <strong>main</strong> ya <strong>master</strong> select karke **Save** dabao.<br>
+                    🎉 1 minute ke andar aapki website live URL me mil jayegi!</p>
+                </div>
+            </div>
+
+            <button onclick="closeModal('deploy-modal')" class="w-full mt-5 bg-yt-red hover:bg-red-700 text-white font-semibold py-2.5 rounded-xl transition text-xs">
+                Got It! Close Guide
+            </button>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 2: Monetag Ads Integration Setup Guide                      -->
+    <!-- ================================================================= -->
+    <div id="monetag-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-yt-card border border-yt-border rounded-2xl max-w-xl w-full p-6 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeModal('monetag-modal')" class="absolute top-4 right-4 text-yt-muted hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-xl font-bold mb-1 text-yellow-400 flex items-center gap-2">
+                <i class="fa-solid fa-dollar-sign"></i>
+                Monetag Ads Integration Guide
+            </h3>
+            <p class="text-xs text-yt-muted mb-4">Earn money from every creator visiting your tool site.</p>
+
+            <div class="space-y-4 text-xs text-yt-text">
+                <div class="bg-yt-dark p-3.5 rounded-xl border border-yt-border">
+                    <strong class="text-yellow-400 block mb-1">1. Direct Link / SmartLink Ads</strong>
+                    <p>Aap tool ke buttons (jaise "Generate" ya "Copy") ke onclick event me Monetag Direct Link add kar sakte hain, ya popunder script header me daal sakte hain.</p>
+                </div>
+
+                <div class="bg-yt-dark p-3.5 rounded-xl border border-yt-border">
+                    <strong class="text-yellow-400 block mb-1">2. Where to Paste Scripts?</strong>
+                    <p>Is file me humne clearly mark kiya hai:<br>
+                    • <strong>Header Tag:</strong> Popunder / In-Page Push script ke liye.<br>
+                    • <strong>Top & Bottom Ad Slots:</strong> 728x90 Banner / Native Ad code ke liye.<br>
+                    • <strong>Sidebar Slot:</strong> Square banner ads ke liye.</p>
+                </div>
+
+                <div class="bg-yt-dark p-3.5 rounded-xl border border-yt-border font-mono text-[11px] text-green-300">
+                    &lt;!-- Code Search inside file --&gt;<br>
+                    Search for: "MONETAG BANNER AD CODE"
+                </div>
+            </div>
+
+            <button onclick="closeModal('monetag-modal')" class="w-full mt-5 bg-yt-hover border border-yt-border text-white font-semibold py-2.5 rounded-xl transition text-xs">
+                Close Guide
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tool-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-yt-red', 'text-white');
+                btn.classList.add('text-yt-muted');
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.add('bg-yt-red', 'text-white');
+            activeBtn.classList.remove('text-yt-muted');
+        }
+
+        // Modal Controls
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // Copy to Clipboard Utility
+        function copyToClipboard(elementId) {
+            const el = document.getElementById(elementId);
+            let textToCopy = el.value || el.innerText;
+
+            if (!textToCopy) return;
+
+            const tempInput = document.createElement("textarea");
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            showToast("Copied to Clipboard!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        // ==========================================
+        // TOOL 1: TITLE GENERATOR & CTR ANALYZER
+        // ==========================================
+        const templates = [
+            "🔥 {topic} - Don't Do This Mistake! (2026 Guide)",
+            "How I Mastered {topic} in Just 7 Days! 🚀",
+            "The SECRET to {topic} Nobody Tells You!",
+            "10 {topic} Hacks That Will Change Everything!",
+            "Stop Doing {topic} WRONG! (Do This Instead)"
+        ];
+
+        function generateTitles() {
+            const topic = document.getElementById('title-topic').value.trim() || "YouTube Growth";
+            const container = document.getElementById('generated-titles-container');
+            container.innerHTML = "";
+
+            templates.forEach(tpl => {
+                const titleText = tpl.replace("{topic}", topic);
+                const card = document.createElement('div');
+                card.className = "bg-yt-dark border border-yt-border p-3 rounded-xl flex items-center justify-between gap-3 text-xs hover:border-yt-red transition";
+                card.innerHTML = `
+                    <span class="font-medium text-yt-text">${titleText}</span>
+                    <button onclick="copyTextDirect('${titleText.replace(/'/g, "\\'")}')" class="bg-yt-card hover:bg-yt-hover border border-yt-border px-3 py-1.5 rounded-lg text-yt-muted hover:text-white transition whitespace-nowrap">
+                        <i class="fa-regular fa-copy"></i> Copy
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function copyTextDirect(text) {
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast("Title Copied!");
+        }
+
+        function analyzeTitle() {
+            const title = document.getElementById('analyze-input').value;
+            const scoreVal = document.getElementById('ctr-score-val');
+            const bar = document.getElementById('ctr-bar');
+            const feedback = document.getElementById('ctr-feedback');
+
+            if (!title) {
+                scoreVal.innerText = "0%";
+                bar.style.width = "0%";
+                feedback.innerText = "Enter title to calculate power words and readability score.";
+                return;
+            }
+
+            let score = 30;
+            const powerWords = ["secret", "stop", "mistake", "hacks", "fast", "easy", "2026", "free", "how to", "best", "pro"];
+            
+            powerWords.forEach(word => {
+                if (title.toLowerCase().includes(word)) score += 12;
+            });
+
+            if (title.length >= 40 && title.length <= 65) score += 20; // Ideal length
+            if (/[!🔥🚀👉💡]/.test(title)) score += 10; // Emoji usage
+
+            score = Math.min(score, 98); // Cap at 98%
+
+            scoreVal.innerText = score + "%";
+            bar.style.width = score + "%";
+
+            if (score > 75) {
+                bar.className = "bg-green-500 h-full transition-all duration-500";
+                feedback.innerHTML = "<span class='text-green-400 font-semibold'>Excellent Title!</span> Contains high CTR power words and optimal length.";
+            } else if (score > 50) {
+                bar.className = "bg-yellow-400 h-full transition-all duration-500";
+                feedback.innerHTML = "<span class='text-yellow-400 font-semibold'>Good Title.</span> Add numbers, power words or emergency hooks to increase CTR.";
+            } else {
+                bar.className = "bg-red-500 h-full transition-all duration-500";
+                feedback.innerHTML = "<span class='text-red-400 font-semibold'>Needs Improvement.</span> Title is too plain. Use numbers, questions or action words.";
+            }
+        }
+
+        // ==========================================
+        // TOOL 2: TAG & HASHTAG GENERATOR
+        // ==========================================
+        function generateTags() {
+            const keyword = document.getElementById('tag-keyword').value.trim() || "YouTube";
+            const badgeContainer = document.getElementById('tags-badge-container');
+            const tagsOutput = document.getElementById('tags-output');
+            const hashtagsDisplay = document.getElementById('hashtags-display');
+            const hashtagsOutput = document.getElementById('hashtags-output');
+
+            const generatedTags = [
+                keyword,
+                `${keyword} tutorial`,
+                `${keyword} 2026`,
+                `how to ${keyword}`,
+                `best ${keyword} tips`,
+                `${keyword} tricks`,
+                `${keyword} secrets`,
+                `${keyword} guide`,
+                `${keyword} for beginners`,
+                `viral ${keyword}`
+            ];
+
+            const hashtags = [
+                `#${keyword.replace(/\s+/g, '')}`,
+                `#${keyword.replace(/\s+/g, '')}Tips`,
+                `#YouTubeShorts`,
+                `#ViralVideo`,
+                `#Trending`
+            ];
+
+            // Render Badges
+            badgeContainer.innerHTML = "";
+            generatedTags.forEach(tag => {
+                const badge = document.createElement('span');
+                badge.className = "bg-yt-card border border-yt-border px-2.5 py-1 rounded-lg text-xs text-yt-text flex items-center gap-1.5";
+                badge.innerHTML = `${tag} <i class="fa-solid fa-xmark text-yt-muted hover:text-yt-red cursor-pointer" onclick="this.parentElement.remove()"></i>`;
+                badgeContainer.appendChild(badge);
+            });
+
+            const tagsCommaSeparated = generatedTags.join(", ");
+            tagsOutput.value = tagsCommaSeparated;
+            document.getElementById('tag-count').innerText = tagsCommaSeparated.length;
+
+            const hashtagString = hashtags.join(" ");
+            hashtagsDisplay.innerText = hashtagString;
+            hashtagsOutput.value = hashtagString;
+        }
+
+        // ==========================================
+        // TOOL 3: DESCRIPTION BUILDER
+        // ==========================================
+        function buildDescription() {
+            const hook = document.getElementById('desc-hook').value || "In this video, we cover essential tips and insights.";
+            const timestamps = document.getElementById('desc-timestamps').value || "00:00 - Intro\n01:00 - Main Content\n04:00 - Outro";
+            const insta = document.getElementById('desc-instagram').value || "https://instagram.com/yourprofile";
+            const telegram = document.getElementById('desc-telegram').value || "https://t.me/yourchannel";
+            const gear = document.getElementById('desc-gear').value || "Best Mic for YouTube: https://amzn.to/example";
+
+            const fullDesc = `${hook}\n\n` +
+                `📌 TIMESTAMPS:\n${timestamps}\n\n` +
+                `🔗 CONNECT WITH ME:\n• Instagram: ${insta}\n• Telegram: ${telegram}\n\n` +
+                `🛠️ GEAR & LINKS USED:\n${gear}\n\n` +
+                `------------------------------\n` +
+                `⚠️ DISCLAIMER: Links included in this description might be affiliate links. If you purchase a product with the links, I may receive a small commission.`;
+
+            document.getElementById('final-description').value = fullDesc;
+        }
+
+        // ==========================================
+        // TOOL 4: THUMBNAIL CTR PREVIEWER
+        // ==========================================
+        function previewThumbnail(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('feed-img').src = reader.result;
+            }
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+
+        function loadThumbFromUrl() {
+            const url = document.getElementById('thumb-url').value.trim();
+            if (url) {
+                document.getElementById('feed-img').src = url;
+            }
+        }
+
+        function updateFeedPreview() {
+            const title = document.getElementById('preview-title').value;
+            const channel = document.getElementById('preview-channel').value;
+
+            document.getElementById('feed-title-display').innerText = title || "Your Video Title Goes Here";
+            document.getElementById('feed-channel-display').innerHTML = `${channel || "Channel Name"} <i class="fa-solid fa-circle-check text-[10px]"></i>`;
+        }
+
+        // ==========================================
+        // TOOL 5: EARNINGS CALCULATOR
+        // ==========================================
+        function calculateEarnings() {
+            const rpm = parseFloat(document.getElementById('calc-niche').value);
+            const dailyViews = parseInt(document.getElementById('calc-views').value);
+
+            document.getElementById('calc-views-val').innerText = dailyViews.toLocaleString() + " Views/Day";
+
+            const dailyEarning = (dailyViews / 1000) * rpm;
+            const monthlyEarning = dailyEarning * 30;
+
+            const inrRate = 83.0; // Approx USD to INR rate
+
+            document.getElementById('res-daily').innerText = "$" + dailyEarning.toFixed(2);
+            document.getElementById('res-daily-inr').innerText = "≈ ₹" + Math.round(dailyEarning * inrRate).toLocaleString() + " INR";
+
+            document.getElementById('res-monthly').innerText = "$" + monthlyEarning.toFixed(2);
+            document.getElementById('res-monthly-inr').innerText = "≈ ₹" + Math.round(monthlyEarning * inrRate).toLocaleString() + " INR";
+        }
+
+        // Initialize Default Values on Load
+        window.onload = function() {
+            buildDescription();
+            calculateEarnings();
+            generateTitles();
+        }
+    </script>
+</body>
+</html>
+```
